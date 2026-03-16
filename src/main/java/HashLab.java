@@ -44,6 +44,52 @@ public class HashLab {
 		return key % NB;
 	}
 
+	// search methods because i am lazy
+	public static int searchA(int key) {
+		int ip = key % NA;
+		int q = key / NA;
+		int offset = (q % NA != 0) ? q : PRIME;
+
+		int pos = ip;
+		int comparisons = 0;
+
+		// We search until we find the key, hit an empty slot,
+		// or have checked every slot in the table.
+		while (comparisons < NA) {
+			comparisons++;
+			if (tableA[pos] == key) {
+				return comparisons; // Found the key (yipeeeeee)
+			}
+			if (tableA[pos] == -1) {
+				break; // Hit an empty slot, key is not in the table
+			}
+			pos = (pos + offset) % NA;
+		}
+		return -1; // Key not found
+	}
+
+	// uses chaining so it's much easier
+	public static int searchB(int key) {
+		int slot = key % NB;
+		String bucket = tableB[slot];
+
+		if (bucket.isEmpty()) {
+			return -1;
+		}
+
+		// Split the comma-separated string into an array of strings
+		String[] elements = bucket.split(", ");
+		int comparisons = 0;
+
+		for (String element : elements) {
+			comparisons++;
+			if (element.equals(String.valueOf(key))) {
+				return comparisons; // Returns the position in the bucket
+			}
+		}
+		return -1; // Key not found in the bucket
+	}
+
 	public static void main(String[] args) {
 
 		int slot;
@@ -73,6 +119,17 @@ public class HashLab {
 		System.out.println("\nBucket Hashing (part B)");
 		for (int i = 0; i < NB; ++i) {
 			System.out.println(i + ": " + tableB[i]);
+		}
+
+		int searchFor[] = { 53, 138, 109, 49, 174, 26 };
+		System.out.println("\nPart A");
+		for (int s : searchFor) {
+			System.out.println(s + " collisions: " + searchA(s));
+		}
+
+		System.out.println("\nPart B");
+		for (int s : searchFor) {
+			System.out.println(s + " collisions: " + searchB(s));
 		}
 	}
 }
