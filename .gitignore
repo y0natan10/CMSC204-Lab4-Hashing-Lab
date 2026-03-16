@@ -1,0 +1,8 @@
+bin/
+*.class
+.settings/
+.metadata/
+target/
+/DO_NOT_DELETE_PLEASE_READ_ME
+/.project
+/.classpath
